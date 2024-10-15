@@ -1,0 +1,30 @@
+name: Autograding
+
+on: [push]
+
+jobs:
+  autograde:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Run Autograding Test
+        run: |
+          # Check if the FLAG.txt file exists
+          if [ ! -f FLAG.txt ]; then
+              echo "FLAG.txt not found!"
+              exit 1
+          fi
+
+          # Read the content of FLAG.txt
+          flag=$(cat FLAG.txt)
+
+          # Check if the flag matches the expected value
+          if [[ "$flag" == "WLUG{AM050720}" ]]; then
+              echo "Test passed! Flag is correct."
+              exit 0
+          else
+              echo "Test failed! Incorrect flag."
+              exit 1
+          fi
