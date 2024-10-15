@@ -10,4 +10,4 @@ Welcome to Level 3 of the challenge! In this stage, you will embark on a quest t
    git clone https://github.com/PranavG1203/Stuck-Between.git
    ```
 
-### Push the retrived flag in the `Flag.txt`.
+#### Push the retrived flag in the `Flag.txt`.
