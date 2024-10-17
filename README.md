@@ -7,7 +7,7 @@ Welcome to Level 3 of the challenge! In this stage, you will embark on a quest t
 1. **Clone the Repository**: Start by cloning the repository that contains the riddles and clues.
    
    ```bash
-      git clone --mirror https://github.com/PranavG1203/Stuck-Between.git
+      git clone https://github.com/PranavG1203/Stuck-Between.git
    ```
 
 #### Push the retrived flag in the `Flag.txt`.
