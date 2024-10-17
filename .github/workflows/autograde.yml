@@ -17,11 +17,19 @@ jobs:
               exit 1
           fi
 
-          # Read the content of FLAG.txt
-          flag=$(cat FLAG.txt)
+          # Read and trim the content of FLAG.txt to remove any newlines or spaces
+          flag=$(tr -d '[:space:]' < FLAG.txt)
+          echo "Content of FLAG.txt (trimmed): $flag"
 
-          # Check if the flag matches the expected value
-          if [[ "$flag" == "WLUG{AM050720}" ]]; then
+          # Expected hash for the correct flag, without revealing the actual flag string
+          expected_hash="ce63dea9d7628e8f455471c788008f294755242195196785746cac4a8cc26d14"
+
+          # Calculate the hash for the student's flag
+          student_hash=$(echo -n "$flag" | sha256sum | awk '{ print $1 }')
+          echo "Student's calculated hash: $student_hash"
+
+          # Compare the hashes
+          if [[ "$student_hash" == "$expected_hash" ]]; then
               echo "Test passed! Flag is correct."
               exit 0
           else
