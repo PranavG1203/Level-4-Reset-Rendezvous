@@ -1,33 +1,30 @@
-name: Autograding
-
-on: [push]
-
+name: Autograding Tests
+'on':
+- push
+- repository_dispatch
+permissions:
+  checks: write
+  actions: read
+  contents: read
 jobs:
-  autograde:
+  run-autograding-tests:
     runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Run Autograding Test
-        run: |
-          # Check if the FLAG.txt file exists
-          if [ ! -f FLAG.txt ]; then
-              
-              exit 1
-          fi
-
-          flag=$(tr -d '[:space:]' < FLAG.txt)
-          
-          expected_hash="ce63dea9d7628e8f455471c788008f294755242195196785746cac4a8cc26d14"
-          
-          student_hash=$(echo -n "$flag" | sha256sum | awk '{ print $1 }')
-          
-          # Compare the hashes
-          if [[ "$student_hash" == "$expected_hash" ]]; then
-              echo "Pass!"
-              exit 0
-          else
-              echo "Fail!"
-              exit 1
-          fi
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: Flag Check
+      id: flag-check
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: Flag Check
+        setup-command: ''
+        command: "bash script.sh"
+        timeout: 10
+        max-score: 10
+    - name: Autograding Reporter
+      uses: classroom-resources/autograding-grading-reporter@v1
+      env:
+        FLAG-CHECK_RESULTS: "${{steps.flag-check.outputs.result}}"
+      with:
+        runners: flag-check
